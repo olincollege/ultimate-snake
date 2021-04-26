@@ -18,10 +18,12 @@ class Snake():
     def __init__(self):
         # Call the parent class (Sprite) constructor
                         
-        self.body_pos = [[10,5],[11,5],[12,5]]
+        self.body_pos = [[10,10],[11,10],[12,10]]
         self.body = []
+        self.movex = 0
+        self.movey = 0
         
-    def direction(self,x,y):
+    def change_direction(self,x,y):
   
         self.movex = x
         self.movey = y
@@ -43,31 +45,29 @@ class Snake():
             new_segment.y = segment[1] * grid_size
             
             self.body.append(new_segment)
-            return self.body
+        return self.body
      
     def update(self):
         #copy old snake without tail (to make moving forward motion)
         new_body = self.get_body()[:-1]
         #creates new head 
-        head_x = new_body[0].rect.x + self.movex
-        head_y = new_body[0].rect.y + self.movex
-        head = Segment(head_x,head_y)
+        head_x = new_body[0].x + self.movex
+        head_y = new_body[0].y + self.movey
+        
+        head = self.create_segment()
+        
+        head.x = head_x
+        head.y = head_y
+        
         new_body.insert(0,head)
         self.body = new_body
-        
 
-        
-        self.rect.x += self.movex
-        self.rect.y += self.movey
         
     def draw(self):
+        self.update()
         for segment in self.body:
-            
             pygame.draw.rect(screen, green, segment)
-        
 
-       
-        
         
 class Food(pygame.sprite.Sprite):
     def __init__(self):
@@ -118,30 +118,30 @@ while running:
         # if left arrow key is pressed 
         if keys[pygame.K_LEFT]:
             # decrement in x co-ordinate
-            snake.direction(-grid_size,0)
+            snake.change_direction(-grid_size,0)
 
             # if left arrow key is pressed
         if keys[pygame.K_RIGHT]:
             # increment in x co-ordinate
-            snake.direction(grid_size,0)
+            snake.change_direction(grid_size,0)
 
             # if left arrow key is pressed
         if keys[pygame.K_UP]:
             # decrement in y co-ordinate
-            snake.direction(0,-grid_size)
+            snake.change_direction(0,-grid_size)
 
             # if left arrow key is pressed
         if keys[pygame.K_DOWN]:
             # increment in y co-ordinate 
-            snake.direction(0,grid_size)
+            snake.change_direction(0,grid_size)
 
-    #update
-    snake.update()
+
     
     #draw/render
     screen.fill(black)
     snake.draw()
     food.draw()
+    
    
     #after drawing everything update the display
     pygame.display.update()
