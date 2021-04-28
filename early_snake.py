@@ -1,23 +1,26 @@
 import pygame
 import sys
+import random
 
 class Board:
     def __init__(self,snake,food):
         self.snake = snake
         self.food = food
-        self.length = 500
-        self.height = 500
+        self.length = 600
+        self.height = 600
         self.score = 0
+        self.grid_size = 30
 
 
-class Snake(Board):
+class Snake():
+    grid_size = 30
     x = 0
     y = 0
-    coordinates = [[250, 250], [280,250],[310,250]]
+    #####A lot of the numbers here are based on the snake moving 30 each time. 
+    coordinates = [[10*grid_size, 10*grid_size], [11*grid_size,10*grid_size],[12*grid_size,10*grid_size]]
     snake_length = 1
 
     def __init__(self):
-        self.board = Board
         self._direction = None
         self.speed = 3
 
@@ -45,26 +48,26 @@ class Snake(Board):
         pass
 
 
-class Food:
+class Food():
     def __init__(self):
-        self.board = Board
-
-    def draw(self):
-        pass
-
+        # Generate random location for food to spawn
+        #have to do -1 since the rects are drawn based on top left
+        self.food_location_x = random.randint(0,20-1)*30
+        self.food_location_y = random.randint(0,20-1)*30
+        self.food_location = [self.food_location_x,self.food_location_y]
 
 class View(Board):
     pygame.init()
     pygame.mixer.init()
     pygame.display.set_caption("Ultimate Snake Game")
-    background = pygame.Surface((500, 500))
+    background = pygame.Surface((600, 600))
     background.fill(pygame.Color('black'))
     surface = pygame.Surface((30, 30))
     surface.fill(pygame.Color('blue'))
 
     def __init__(self, board):
         self.board = board
-        self.back = self.background.get_rect(center=(self.board.length/2, self.board.height/2))
+        self.back = self.background.get_rect(topleft=(self.board.length/2, self.board.height/2))
         self.screen = pygame.display.set_mode((self.board.length, self.board.height))
 
     def draw(self):
@@ -76,11 +79,18 @@ class View(Board):
         
         for segment in self.board.snake.coordinates:
             
-            rect = self.surface.get_rect(center=(segment[0], segment[1]))
-            rect.x = segment[0]
-            rect.y = segment[1]       
-            self.screen.blit(self.surface, rect)
+            segment_rect = self.surface.get_rect()
+            segment_rect.x = segment[0]
+            segment_rect.y = segment[1]       
+            self.screen.blit(self.surface, segment_rect)
+            
+        apple_rect = self.surface.get_rect()
+        apple_rect.x = self.board.food.food_location[0]
+        apple_rect.y = self.board.food.food_location[1]
+        self.screen.blit(self.surface, apple_rect)
         pygame.display.update()
+        
+        
         
    
 
@@ -92,13 +102,13 @@ class Controller(Board):
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            self.board.snake.move([-1*30,0])
+            self.board.snake.move([-1*self.board.grid_size,0])
         elif keys[pygame.K_RIGHT]:
-            self.board.snake.move([1*30,0])
+            self.board.snake.move([1*self.board.grid_size,0])
         elif keys[pygame.K_UP]:
-            self.board.snake.move([0,-1*30])
+            self.board.snake.move([0,-1*self.board.grid_size])
         elif keys[pygame.K_DOWN]:
-            self.board.snake.move([0,1*30])
+            self.board.snake.move([0,1*self.board.grid_size])
         else:
             try:
                 direction = self.board.snake.directions()
