@@ -19,6 +19,7 @@ class Snake(Board):
     def __init__(self):
         self.board = Board
         self._direction = None
+        self.speed = 3
 
 
     def move(self,direction):
@@ -38,6 +39,9 @@ class Snake(Board):
     def directions(self):
         return self._direction
 
+    def speed_multiplier(self):
+        pass
+
 
 class Food:
     def __init__(self):
@@ -53,7 +57,7 @@ class View(Board):
     pygame.display.set_caption("Ultimate Snake Game")
     background = pygame.Surface((500, 500))
     background.fill(pygame.Color('black'))
-    surface = pygame.Surface((10, 10))
+    surface = pygame.Surface((30, 30))
     surface.fill(pygame.Color('blue'))
 
     def __init__(self, board):
@@ -79,13 +83,13 @@ class Controller(Board):
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            self.board.snake.move([-1,0])
+            self.board.snake.move([-1*3,0])
         elif keys[pygame.K_RIGHT]:
-            self.board.snake.move([1,0])
+            self.board.snake.move([1*3,0])
         elif keys[pygame.K_UP]:
-            self.board.snake.move([0,-1])
+            self.board.snake.move([0,-1*3])
         elif keys[pygame.K_DOWN]:
-            self.board.snake.move([0,1])
+            self.board.snake.move([0,1*3])
         else:
             try:
                 direction = self.board.snake.directions()
