@@ -11,9 +11,9 @@ class Board:
 
 
 class Snake(Board):
-    x = 250
-    y = 250
-    coordinates = [[250,250]]
+    x = 0
+    y = 0
+    coordinates = [[250, 250], [280,250],[310,250]]
     snake_length = 1
 
     def __init__(self):
@@ -23,15 +23,17 @@ class Snake(Board):
 
 
     def move(self,direction):
-        self.x += direction[0]
-        self.y += direction[1]
-        self.add_coordinates(self.x,self.y)
+        new_coordinates = self.coordinates[:-1]
+        
+        head_x = new_coordinates[0][0] + direction[0]
+        head_y = new_coordinates[0][1] + direction[1]
+        
+        head = [head_x, head_y]
+        
+        new_coordinates.insert(0,head)
+        self.coordinates = new_coordinates
+        
         self._direction = direction
-
-    def add_coordinates(self, x, y):
-        self.coordinates.append([x,y])
-        if len(self.coordinates) > self.snake_length:
-            self.coordinates = self.coordinates[1:]
 
     def add_snake_segment(self):
         pass
@@ -62,7 +64,6 @@ class View(Board):
 
     def __init__(self, board):
         self.board = board
-        self.rect = self.surface.get_rect(center=(self.board.snake.coordinates[0][0], self.board.snake.coordinates[0][1]))
         self.back = self.background.get_rect(center=(self.board.length/2, self.board.height/2))
         self.screen = pygame.display.set_mode((self.board.length, self.board.height))
 
@@ -72,8 +73,16 @@ class View(Board):
                 pygame.quit()
                 sys.exit()
         self.screen.blit(self.background,self.back)
-        self.screen.blit(self.surface, self.rect)
+        
+        for segment in self.board.snake.coordinates:
+            
+            rect = self.surface.get_rect(center=(segment[0], segment[1]))
+            rect.x = segment[0]
+            rect.y = segment[1]       
+            self.screen.blit(self.surface, rect)
         pygame.display.update()
+        
+   
 
 
 class Controller(Board):
@@ -83,13 +92,13 @@ class Controller(Board):
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            self.board.snake.move([-1*3,0])
+            self.board.snake.move([-1*30,0])
         elif keys[pygame.K_RIGHT]:
-            self.board.snake.move([1*3,0])
+            self.board.snake.move([1*30,0])
         elif keys[pygame.K_UP]:
-            self.board.snake.move([0,-1*3])
+            self.board.snake.move([0,-1*30])
         elif keys[pygame.K_DOWN]:
-            self.board.snake.move([0,1*3])
+            self.board.snake.move([0,1*30])
         else:
             try:
                 direction = self.board.snake.directions()
@@ -104,5 +113,5 @@ clock = pygame.time.Clock()
 while 1:
     View(game).draw()
     Controller(game).player_input()
-    clock.tick(60)
+    clock.tick(10)
     
