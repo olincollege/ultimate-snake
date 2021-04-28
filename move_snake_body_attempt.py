@@ -18,10 +18,11 @@ class Snake():
     def __init__(self):
         # Call the parent class (Sprite) constructor
                         
-        self.body_pos = [[10,5],[11,5],[12,5]]
-        self.body = []
+        self.body_pos = [[10,10],[11,10],[12,10]]
+        self.movex = 0
+        self.movey = 0
         
-    def direction(self,x,y):
+    def change_direction(self,x,y):
   
         self.movex = x
         self.movey = y
@@ -33,41 +34,34 @@ class Snake():
         segment_rect = segment_surface.get_rect()
         return segment_rect
         
+     
+    def update(self):
+        #get segments for new body
         
-    def get_body(self):
+        #copy old snake without tail (to make moving forward motion)
+        new_body_pos = self.body_pos[:-1]
+       
+        #creates new head 
+        head_x = new_body_pos[0][0] + self.movex
+        head_y = new_body_pos[0][1] + self.movey
+                
+        head = [head_x, head_y]
+        
+        new_body_pos.insert(0,head)
+        self.body_pos = new_body_pos
+
+        
+    def draw(self):
+        self.update()
         for segment in self.body_pos:
             #get rect for each segment
             new_segment = self.create_segment()
             #place rect based on position
             new_segment.x = segment[0] * grid_size
             new_segment.y = segment[1] * grid_size
-            
-            self.body.append(new_segment)
-            return self.body
-     
-    def update(self):
-        #copy old snake without tail (to make moving forward motion)
-        new_body = self.get_body()[:-1]
-        #creates new head 
-        head_x = new_body[0].rect.x + self.movex
-        head_y = new_body[0].rect.y + self.movex
-        head = Segment(head_x,head_y)
-        new_body.insert(0,head)
-        self.body = new_body
+            pygame.draw.rect(screen, green, new_segment)
         
 
-        
-        self.rect.x += self.movex
-        self.rect.y += self.movey
-        
-    def draw(self):
-        for segment in self.body:
-            
-            pygame.draw.rect(screen, green, segment)
-        
-
-       
-        
         
 class Food(pygame.sprite.Sprite):
     def __init__(self):
@@ -81,7 +75,8 @@ class Food(pygame.sprite.Sprite):
         self.image.fill(red)
         # Fetch the rectangle object that has the dimensions of the image
         self.rect = self.image.get_rect()
-        self.rect.center = (food_location_x,food_location_y)
+        self.rect.x = food_location_x
+        self.rect.y = food_location_y
         
     def draw(self):
         pygame.draw.rect(screen, red, self.rect)
@@ -118,30 +113,30 @@ while running:
         # if left arrow key is pressed 
         if keys[pygame.K_LEFT]:
             # decrement in x co-ordinate
-            snake.direction(-grid_size,0)
+            snake.change_direction(-1,0)
 
             # if left arrow key is pressed
         if keys[pygame.K_RIGHT]:
             # increment in x co-ordinate
-            snake.direction(grid_size,0)
+            snake.change_direction(1,0)
 
             # if left arrow key is pressed
         if keys[pygame.K_UP]:
             # decrement in y co-ordinate
-            snake.direction(0,-grid_size)
+            snake.change_direction(0,-1)
 
             # if left arrow key is pressed
         if keys[pygame.K_DOWN]:
             # increment in y co-ordinate 
-            snake.direction(0,grid_size)
+            snake.change_direction(0,1)
 
-    #update
-    snake.update()
+
     
     #draw/render
     screen.fill(black)
     snake.draw()
     food.draw()
+    
    
     #after drawing everything update the display
     pygame.display.update()
