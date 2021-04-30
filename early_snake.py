@@ -19,13 +19,34 @@ class Board:
             #print('Eaten!')
             return True
 
+    def game_over(self):
+        if self.snake_collision() or self.wall_collision():
+            # Do stuff here!
+            print('Game Over!')
+            pygame.quit()
+            sys.exit()
+
+    def add_score(self):
+        self.score += 1
+
+    def snake_collision(self):
+        if self.snake.coordinates[0] in self.snake.coordinates[1:]:
+            return True
+        return False
+
+    def wall_collision(self):
+        if self.snake.coordinates[0][0] > self.length or self.snake.coordinates[0][0] < 0 or self.snake.coordinates[0][1] > self.height or self.snake.coordinates[0][1] < 0:
+            return True
+        return False
 
 
 class Snake:
     grid_size = 30
     x = 0
     y = 0
-    #####A lot of the numbers here are based on the snake moving 30 each time.
+    # A lot of the numbers here are based on the snake moving 30 each time.
+
+    # Currently Does not allow for snake to go to the right because it would collide with body.
     coordinates = [[10 * grid_size, 10 * grid_size], [11 * grid_size, 10 * grid_size], [12 * grid_size, 10 * grid_size]]
     snake_length = 1
 
@@ -81,7 +102,7 @@ class View(Board):
     pygame.init()
     pygame.mixer.init()
     pygame.display.set_caption("Ultimate Snake Game")
-    background = pygame.Surface((600, 600))
+    background = pygame.Surface((600,600))
     background.fill(pygame.Color('black'))
     surface = pygame.Surface((30, 30))
     surface.fill(pygame.Color('blue'))
@@ -138,8 +159,9 @@ clock = pygame.time.Clock()
 while 1:
     View(game).draw()
     Controller(game).player_input()
+    game.game_over()
     if game.food_eaten():
+        game.add_score()
         game.snake.add_snake_segment(game.snake.directions())
         game.food.spawn_new_food()
     clock.tick(10)
-    
