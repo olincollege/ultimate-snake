@@ -108,10 +108,11 @@ class View(Board):
     surface.fill(pygame.Color('blue'))
 
     def __init__(self, board):
+        self.border_width = 30
         self.board = board
-        self.back = self.background.get_rect(topleft=(self.board.length / 2, self.board.height / 2))
-        self.screen = pygame.display.set_mode((self.board.length, self.board.height))
-
+        self.back = self.background.get_rect(center=(self.board.length / 2, self.board.height / 2))
+        self.screen = pygame.display.set_mode((self.board.length + self.border_width, self.board.height+self.border_width))
+        
     def draw(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -129,6 +130,25 @@ class View(Board):
         apple_rect.x = self.board.food.food_location[0]
         apple_rect.y = self.board.food.food_location[1]
         self.screen.blit(self.surface, apple_rect)
+        
+        #create frame
+        # top line
+        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.board.length,self.border_width*2])
+        # bottom line
+        pygame.draw.rect(self.screen, (169,169,169), [0,self.board.height,self.board.length,self.border_width])
+        # left line
+        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.border_width, self.board.height])
+        # right line
+        pygame.draw.rect(self.screen, (169,169,169), [self.board.length,0,self.border_width, self.board.length+self.border_width])
+        
+        
+        # display score  
+        score = str(self.board.score)
+        font = pygame.font.SysFont(None, 60)
+        img = font.render(f'Score: {score}', True, 'black')
+        self.screen.blit(img, (30, 10))
+
+        
         pygame.display.update()
 
 
