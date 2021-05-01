@@ -4,28 +4,33 @@ import random
 
 
 class Board:
+    length = 600
+    height = 600
+    grid_size = 30
+    border_width = 30
+        
     def __init__(self, snake, food):
         self.snake = snake
         self.food = food
-        self.length = 600
-        self.height = 600
         self.score = 0
-        self.grid_size = 30
 
-    def food_eaten(self):
-        #print(f'Snake Location: {self.snake.coordinates[0]}')
-        #print(f'Food Location: {self.food.food_location}')
+
+    def food_eaten(self):    
         if self.snake.coordinates[0] == self.food.food_location:
-            #print('Eaten!')
             return True
-
+        
     def game_over(self):
         if self.snake_collision() or self.wall_collision():
-            # Do stuff here!
             print('Game Over!')
             pygame.quit()
             sys.exit()
-
+    
+    def food_snake_overlap(self):
+        #checks if food spawns on food
+        for segment in self.snake.coordinates[1:]:
+            if segment == self.food.food_location:
+                self.food.spawn_new_food()
+                
     def add_score(self):
         self.score += 1
 
@@ -35,24 +40,20 @@ class Board:
         return False
 
     def wall_collision(self):
-        if self.snake.coordinates[0][0] > self.length or self.snake.coordinates[0][0] < 0 or self.snake.coordinates[0][1] > self.height or self.snake.coordinates[0][1] < 0:
+        if self.snake.coordinates[0][0] > self.length-self.border_width or self.snake.coordinates[0][0] < self.border_width or self.snake.coordinates[0][1] > self.height-self.border_width or self.snake.coordinates[0][1] < self.border_width*2:
             return True
         return False
 
 
 class Snake:
     grid_size = 30
-    x = 0
-    y = 0
-    # A lot of the numbers here are based on the snake moving 30 each time.
-
-    # Currently Does not allow for snake to go to the right because it would collide with body.
-    coordinates = [[10 * grid_size, 10 * grid_size], [11 * grid_size, 10 * grid_size], [12 * grid_size, 10 * grid_size]]
-    snake_length = 1
 
     def __init__(self):
         self._direction = None
         self.speed = 3
+        self.coordinates = [[10 * self.grid_size, 10 * self.grid_size], [11 * self.grid_size, 10 * self.grid_size], [12 * self.grid_size, 10 * self.grid_size]]
+
+
 
     def move(self, direction):
         new_coordinates = self.coordinates[:-1]
@@ -87,14 +88,15 @@ class Snake:
 class Food:
     def __init__(self):
         # Generate random location for food to spawn
-        # have to do -1 since the rects are drawn based on top left
-        self.food_location_x = random.randint(0, 20 - 1) * 30
-        self.food_location_y = random.randint(0, 20 - 1) * 30
+        # create random locations while accounting for borders
+        #have to do -2 since coordinates are in terms of top left
+        self.food_location_x = random.randint(1, 20 - 2) * 30
+        self.food_location_y = random.randint(2, 20 - 2) * 30
         self.food_location = [self.food_location_x, self.food_location_y]
 
     def spawn_new_food(self):
-        self.food_location_x = random.randint(0, 20 - 1) * 30
-        self.food_location_y = random.randint(0, 20 - 1) * 30
+        self.food_location_x = random.randint(1, 20 - 2) * 30
+        self.food_location_y = random.randint(2, 20 - 2) * 30
         self.food_location = [self.food_location_x, self.food_location_y]
 
 
@@ -102,51 +104,72 @@ class View(Board):
     pygame.init()
     pygame.mixer.init()
     pygame.display.set_caption("Ultimate Snake Game")
-    background = pygame.Surface((600,600))
-    background.fill(pygame.Color('black'))
     surface = pygame.Surface((30, 30))
     surface.fill(pygame.Color('blue'))
 
     def __init__(self, board):
-        self.border_width = 30
         self.board = board
-        self.back = self.background.get_rect(center=(self.board.length / 2, self.board.height / 2))
-        self.screen = pygame.display.set_mode((self.board.length + self.border_width, self.board.height+self.border_width))
+        self.screen = pygame.display.set_mode((self.board.length + self.board.border_width, self.board.height+self.board.border_width))       
+        self.head_up = pygame.image.load('images/snake_up.png').convert_alpha()
+        self.head_down = pygame.image.load('images/snake_down.png').convert_alpha()
+        self.head_right = pygame.image.load('images/snake_right.png').convert_alpha()
+        self.head_left = pygame.image.load('images/snake_left.png').convert_alpha()
+        self.head_image = self.head_left
+        
+    def get_head_image(self):
+        head_orientation_x = self.board.snake.coordinates[1][0] - self.board.snake.coordinates[0][0]
+        head_orientation_y = self.board.snake.coordinates[1][1] - self.board.snake.coordinates[0][1]
+        if head_orientation_x == 30 and head_orientation_y == 0:
+            self.head_image = self.head_left
+        elif head_orientation_x == -30 and head_orientation_y == 0:
+            self.head_image = self.head_right
+        elif head_orientation_x == 0 and head_orientation_y == 30:
+            self.head_image = self.head_up
+        elif head_orientation_x == 0 and head_orientation_y == -30:
+            self.head_image = self.head_down
         
     def draw(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        self.screen.blit(self.background, self.back)
-
-        for segment in self.board.snake.coordinates:
+            self.screen.fill('white')
+            
+       #get head image and blit
+        self.get_head_image()
+        head_rect = self.head_image.get_rect()
+        head_rect.x = self.board.snake.coordinates[0][0]
+        head_rect.y = self.board.snake.coordinates[0][1]
+        self.screen.blit(self.head_image,head_rect)
+        
+        for segment in self.board.snake.coordinates[1:]:
             segment_rect = self.surface.get_rect()
             segment_rect.x = segment[0]
             segment_rect.y = segment[1]
             self.screen.blit(self.surface, segment_rect)
-
-        apple_rect = self.surface.get_rect()
+        
+        apple_image= pygame.image.load('images/apple.png').convert_alpha()
+        apple_rect = apple_image.get_rect()
         apple_rect.x = self.board.food.food_location[0]
         apple_rect.y = self.board.food.food_location[1]
-        self.screen.blit(self.surface, apple_rect)
+        self.screen.blit(apple_image, apple_rect)
         
         #create frame
         # top line
-        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.board.length,self.border_width*2])
+        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.board.length,self.board.border_width*2])
         # bottom line
-        pygame.draw.rect(self.screen, (169,169,169), [0,self.board.height,self.board.length,self.border_width])
+        pygame.draw.rect(self.screen, (169,169,169), [0,self.board.height,self.board.length,self.board.border_width])
         # left line
-        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.border_width, self.board.height])
+        pygame.draw.rect(self.screen, (169,169,169), [0,0,self.board.border_width, self.board.height])
         # right line
-        pygame.draw.rect(self.screen, (169,169,169), [self.board.length,0,self.border_width, self.board.length+self.border_width])
-        
+        pygame.draw.rect(self.screen, (169,169,169), [self.board.length,0,self.board.border_width, self.board.length+self.board.border_width])
         
         # display score  
         score = str(self.board.score)
         font = pygame.font.SysFont(None, 60)
-        img = font.render(f'Score: {score}', True, 'black')
-        self.screen.blit(img, (30, 10))
+        score_text = font.render(f'Score: {score}', True, 'black')
+        self.screen.blit(score_text, (30, 10))
+        
 
         
         pygame.display.update()
@@ -180,8 +203,9 @@ while 1:
     View(game).draw()
     Controller(game).player_input()
     game.game_over()
+    game.food_snake_overlap()
     if game.food_eaten():
         game.add_score()
         game.snake.add_snake_segment(game.snake.directions())
-        game.food.spawn_new_food()
+        game.food.spawn_new_food() 
     clock.tick(10)
