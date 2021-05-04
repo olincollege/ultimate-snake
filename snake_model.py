@@ -42,6 +42,9 @@ class Board:
         self._snake = snake
         self._food = food
         self._score = 0
+        self._start_game = False
+        self._game_over = False
+        self._new_game = False
 
     @property
     def snake(self):
@@ -89,7 +92,8 @@ class Board:
         Returns:
             A boolian representing if the game should end.
         """
-        return self.snake_collision() or self.wall_collision()
+        if self.snake_collision() or self.wall_collision():
+            self._game_over = True 
 
     def food_snake_overlap(self):
         """

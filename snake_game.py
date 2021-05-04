@@ -16,19 +16,20 @@ def main():
     # set up the board
     game = Board(Snake(), Food())
     clock = pygame.time.Clock()
+
+    i = 1
     while 1:
+        View(game).draw_start_menu()
         View(game).draw()
         Controller(game).player_input()
-        if game.game_over():
-            print('Game Over!')
-            pygame.quit()
-            sys.exit()
-
+        game.game_over()
         game.food_snake_overlap()
         if game.food_eaten():
             game.add_score()
             game.snake.add_snake_segment(game.snake.directions())
             game.food.spawn_new_food()
+        if game._new_game is True:
+            main()
         clock.tick(10)
 
 

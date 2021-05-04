@@ -52,6 +52,9 @@ class View():
         self._screen = pygame.display.set_mode((self._board.length + \
             self._board.border_width,self._board.height+self._board.border_width))
         self._head_image = self.head_left
+        self._start_menu = pygame.image.load('images/start_menu.png')
+        self._start_menu_surface = pygame.display.set_mode((self._board.length + \
+            self._board.border_width,self._board.height+self._board.border_width))
 
     def get_head_image(self):
         """
@@ -73,16 +76,20 @@ class View():
         elif head_orientation_x == 0 and head_orientation_y == -30:
             self._head_image = self.head_down
 
+    def draw_start_menu(self):
+        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
+        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
+
+    def draw_game_over(self):
+        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
+        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
+
+
     def draw(self):
         """
         Display a representation of the snake game.
         """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            self._screen.fill('white')
-
+        self._screen.fill('white')
        # get head image and blit
         self.get_head_image()
         head_rect = self._head_image.get_rect()
@@ -124,5 +131,34 @@ class View():
         font = pygame.font.SysFont(None, 60)
         score_text = font.render(f'Score: {score}', True, 'black')
         self._screen.blit(score_text, (30, 10))
-
         pygame.display.update()
+
+        while self._board._start_game is False:
+            self.draw_start_menu()
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    mouse_position = pygame.mouse.get_pos()
+                    if self._start_menu_rect.collidepoint(mouse_position):
+                        self._board._start_game = True
+        while self._board._game_over is True:
+            self.draw_game_over()
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    mouse_position = pygame.mouse.get_pos()
+                    if self._start_menu_rect.collidepoint(mouse_position):
+                        self._board._new_game = True
+            break
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
