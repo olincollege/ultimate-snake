@@ -53,7 +53,10 @@ class View():
             self._board.border_width,self._board.height+self._board.border_width))
         self._head_image = self.head_left
         self._start_menu = pygame.image.load('images/start_menu.png')
+        self._end_menu = pygame.image.load('images/end_menu.png')
         self._start_menu_surface = pygame.display.set_mode((self._board.length + \
+            self._board.border_width,self._board.height+self._board.border_width))
+        self._end_menu_surface = pygame.display.set_mode((self._board.length + \
             self._board.border_width,self._board.height+self._board.border_width))
 
     def get_head_image(self):
@@ -81,8 +84,8 @@ class View():
         self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
 
     def draw_game_over(self):
-        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
-        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
+        self._end_menu_rect = self._end_menu.get_rect(center = (300,300))
+        self._end_menu_surface.blit(self._end_menu, self._end_menu_rect)
 
 
     def draw(self):
@@ -153,7 +156,7 @@ class View():
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mouse_position = pygame.mouse.get_pos()
-                    if self._start_menu_rect.collidepoint(mouse_position):
+                    if self._end_menu_rect.collidepoint(mouse_position):
                         self._board._new_game = True
             break
 
@@ -162,3 +165,4 @@ class View():
                 pygame.quit()
                 sys.exit()
 
+        pygame.display.update()

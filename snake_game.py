@@ -31,6 +31,7 @@ def main():
         if game._new_game is True:
             main()
         clock.tick(10)
+    
 
 
 if __name__ == "__main__":
