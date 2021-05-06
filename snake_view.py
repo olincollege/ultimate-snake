@@ -29,6 +29,10 @@ class View():
     pygame.init()
     pygame.mixer.init()
     pygame.display.set_caption("Ultimate Snake Game")
+
+    icon = pygame.image.load('images/snake_icon.png')
+    pygame.display.set_icon(icon)
+
     surface = pygame.Surface((30, 30))
     surface.fill(pygame.Color('blue'))
     head_up = pygame.image.load('images/snake_up.png')
