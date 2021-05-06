@@ -27,7 +27,7 @@ class Board:
     height = 600
     border_width = 30
 
-    def __init__(self, snake, food, potion):
+    def __init__(self, snake, food, potion, speed):
         """
         Create a board in which the snake, food, and environment
         interact.
@@ -45,6 +45,7 @@ class Board:
         self._food = food
         self._score = 0
         self._potion = potion
+        self._speed = speed
         self._start_game = False
         self._game_over = False
         self._new_game = False
@@ -69,7 +70,14 @@ class Board:
         Return the potion.
         """
         return self._potion
-
+    
+    @property
+    def speed(self):
+        """
+        Return the potion.
+        """
+        return self._speed
+    
     @property
     def score(self):
         """
@@ -116,8 +124,10 @@ class Board:
         for segment in self._snake.coordinates[1:]:
             if segment == self._food.item_location:
                 self._food.spawn_new_item()
-            if segment == self._potion.item_location:
+            elif segment == self._potion.item_location:
                 self._potion.spawn_new_item()
+            elif segment == self._speed.item_location:
+                self._speed.spawn_new_item()
 
     def add_score(self):
         """
@@ -159,6 +169,19 @@ class Board:
             A boolian representing if the snake has eaten food.
         """
         return self._snake.coordinates[0] == self._potion.item_location    
+    
+    def speed_eaten(self):
+        """
+        Returns a boolian based on if the snake has eaten food.
+
+        Returns a boolian based on if the head of the snake has
+        overlapped with any food. True means that the snake has
+        eaten food, false means that the snake has not eaten.
+
+        Returns:
+            A boolian representing if the snake has eaten food.
+        """
+        return self._snake.coordinates[0] == self._speed.item_location     
     
 
 class Snake:
@@ -235,11 +258,6 @@ class Snake:
         Return the direction the snake is going.
         """
         return self._direction
-
-    def speed_multiplier(self):
-        """
-        Increases the speed of the snake.
-        """
 
 
 class Item:

@@ -24,6 +24,7 @@ class View():
         _screen: A display surface representing the window to display
             the rest of the game components on.
         _head_image: A png image representing the head of the snake.
+        _start_menu_su
     """
 
     pygame.init()
@@ -83,14 +84,6 @@ class View():
         elif head_orientation_x == 0 and head_orientation_y == -30:
             self._head_image = self.head_down
 
-    def draw_start_menu(self):
-        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
-        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
-
-    def draw_game_over(self):
-        self._end_menu_rect = self._end_menu.get_rect(center = (300,300))
-        self._end_menu_surface.blit(self._end_menu, self._end_menu_rect)
-
 
     def draw(self, potion):
         """
@@ -100,14 +93,16 @@ class View():
         
         self.draw_apple()
         self.draw_border()
-        self.draw_score()
-        self.draw_menus() 
         self.draw_potion()
+        self.draw_speed()
         
         if potion:
             self.draw_invisible_snake()
         elif not potion:
             self.draw_snake()
+        self.draw_menus() 
+        self.draw_score()
+
         pygame.display.update()
         
     def draw_apple(self):
@@ -142,6 +137,13 @@ class View():
             
     def draw_invisible_snake(self):
         pass      
+    
+    def draw_speed(self):
+        lightning_image = pygame.image.load('images/lightning.png').convert_alpha()
+        lightning_rect = lightning_image.get_rect()
+        lightning_rect.x = self._board.speed.item_location[0]
+        lightning_rect.y = self._board.speed.item_location[1]
+        self._screen.blit(lightning_image, lightning_rect) 
             
     def draw_border(self):
         
@@ -167,6 +169,14 @@ class View():
         score_text = font.render(f'Score: {score}', True, 'black')
         self._screen.blit(score_text, (30, 10))
         pygame.display.update()
+
+    def draw_start_menu(self):
+        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
+        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
+
+    def draw_game_over(self):
+        self._end_menu_rect = self._end_menu.get_rect(center = (300,300))
+        self._end_menu_surface.blit(self._end_menu, self._end_menu_rect)
         
     def draw_menus(self):
         
@@ -182,7 +192,9 @@ class View():
                     if self._start_menu_rect.collidepoint(mouse_position):
                         self._board._start_game = True
         while self._board._game_over is True:
+            self._screen.fill('white')
             self.draw_game_over()
+            
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

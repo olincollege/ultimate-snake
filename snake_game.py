@@ -17,12 +17,15 @@ def main():
     snake = Snake()
     food = Item()
     potion = Item()
-    game = Board(snake, food, potion)
+    speed = Item()
+    game = Board(snake, food, potion, speed)
     clock = pygame.time.Clock()
     
     potion = False
 
-    loop_counter = 0
+    loop_counter1= 0
+    loop_counter2= 0
+    fps = 10
     
     while 1:
         
@@ -36,20 +39,28 @@ def main():
             game.food.spawn_new_item()   
             
         if game.potion_eaten():
-             loop_counter = 10
-        if loop_counter>0:
+             loop_counter1 = 10
+        if loop_counter1>0:
             potion = True
         else:
             potion = False
             
         View(game).draw(potion)
+        
+        if game.speed_eaten():
+             loop_counter2 = 10
+        if loop_counter2>0:
+            fps = 20
+        else:
+            fps = 10
                 
  
         if game._new_game is True:
             main()
         
-        clock.tick(10)
-        loop_counter -= 1
+        clock.tick(fps)
+        loop_counter1 -= 1
+        loop_counter2 -= 1
     
 
 
