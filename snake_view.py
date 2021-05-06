@@ -110,8 +110,8 @@ class View():
         # blit an image of an apple for the food
         apple_image = pygame.image.load('images/apple.png').convert_alpha()
         apple_rect = apple_image.get_rect()
-        apple_rect.x = self._board.food.food_location[0]
-        apple_rect.y = self._board.food.food_location[1]
+        apple_rect.x = self._board.food.item_location[0]
+        apple_rect.y = self._board.food.item_location[1]
         self._screen.blit(apple_image, apple_rect)
 
         # create frame around the game window
