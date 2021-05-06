@@ -78,7 +78,7 @@ class Board:
         Returns:
             A boolian representing if the snake has eaten food.
         """
-        return self._snake.coordinates[0] == self._food.food_location
+        return self._snake.coordinates[0] == self._food.item_location
 
     def game_over(self):
         """
@@ -104,8 +104,8 @@ class Board:
         """
         # checks if food spawns on the snake
         for segment in self._snake.coordinates[1:]:
-            if segment == self._food.food_location:
-                self._food.spawn_new_food()
+            if segment == self._food.item_location:
+                self._food.spawn_new_item()
 
     def add_score(self):
         """
@@ -217,14 +217,14 @@ class Snake:
         """
 
 
-class Food:
+class Item:
     """
     A representation of the food in the snake game.
 
     Attributes:
-        _food_location_x: The x coordinate of the food location.
-        _food_location_y: The y coordinate of the food location.
-        _food_location: The coordinates of the food location.
+        _item_location_x: The x coordinate of the item location.
+        _item_location_y: The y coordinate of the item location.
+        _item_location: The coordinates of the item location.
     """
 
     def __init__(self):
@@ -232,28 +232,28 @@ class Food:
         Create a new piece of food.
 
         Args:
-            _food_location_x: The x coordinate of the food location.
-            _food_location_y: The y coordinate of the food location.
-            _food_location: The coordinates of the food location.
+        _item_location_x: The x coordinate of the item location.
+        _item_location_y: The y coordinate of the item location.
+        _item_location: The coordinates of the item location.
         """
         # Generate random location for food to spawn
         # create random locations while accounting for borders
         # have to do -2 since coordinates are in terms of top left
-        self._food_location_x = random.randint(1, 20 - 2) * 30
-        self._food_location_y = random.randint(2, 20 - 2) * 30
-        self._food_location = [self._food_location_x, self._food_location_y]
+        self._item_location_x = random.randint(1, 20 - 2) * 30
+        self._item_location_y = random.randint(2, 20 - 2) * 30
+        self._item_location = [self._item_location_x, self._item_location_y]
 
     @property
-    def food_location(self):
+    def item_location(self):
         """
-        Return the coordinates of the food.
+        Return the coordinates of the item.
         """
-        return self._food_location
+        return self._item_location
 
-    def spawn_new_food(self):
+    def spawn_new_item(self):
         """
-        Spawns a new location for the food.
+        Spawns a new location for the item.
         """
-        self._food_location_x = random.randint(1, 20 - 2) * 30
-        self._food_location_y = random.randint(2, 20 - 2) * 30
-        self._food_location = [self._food_location_x, self._food_location_y]
+        self._item_location_x = random.randint(1, 20 - 2) * 30
+        self._item_location_y = random.randint(2, 20 - 2) * 30
+        self._item_location = [self._item_location_x, self._item_location_y]
