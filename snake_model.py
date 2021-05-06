@@ -21,12 +21,13 @@ class Board:
             with.
         _score: An int representing the player's score based on food
             the snake has eaten.
+        _potion:
     """
     length = 600
     height = 600
     border_width = 30
 
-    def __init__(self, snake, food):
+    def __init__(self, snake, food, potion):
         """
         Create a board in which the snake, food, and environment
         interact.
@@ -38,10 +39,12 @@ class Board:
                 with.
             _score: An int representing the player's score based on food
                 the snake has eaten.
+            _potion:
         """
         self._snake = snake
         self._food = food
         self._score = 0
+        self._potion = potion
         self._start_game = False
         self._game_over = False
         self._new_game = False
@@ -59,6 +62,13 @@ class Board:
         Return the food.
         """
         return self._food
+    
+    @property
+    def potion(self):
+        """
+        Return the potion.
+        """
+        return self._potion
 
     @property
     def score(self):
@@ -95,7 +105,7 @@ class Board:
         if self.snake_collision() or self.wall_collision():
             self._game_over = True 
 
-    def food_snake_overlap(self):
+    def item_snake_overlap(self):
         """
         Checks if the food spawns on the snake.
 
@@ -106,6 +116,8 @@ class Board:
         for segment in self._snake.coordinates[1:]:
             if segment == self._food.item_location:
                 self._food.spawn_new_item()
+            if segment == self._potion.item_location:
+                self._potion.spawn_new_item()
 
     def add_score(self):
         """
@@ -134,7 +146,20 @@ class Board:
             self._snake.coordinates[0][0] < self.border_width or
             self._snake.coordinates[0][1] > self.height-self.border_width or
             self._snake.coordinates[0][1] < self.border_width*2)
+    
+    def potion_eaten(self):
+        """
+        Returns a boolian based on if the snake has eaten food.
 
+        Returns a boolian based on if the head of the snake has
+        overlapped with any food. True means that the snake has
+        eaten food, false means that the snake has not eaten.
+
+        Returns:
+            A boolian representing if the snake has eaten food.
+        """
+        return self._snake.coordinates[0] == self._potion.item_location    
+    
 
 class Snake:
     """

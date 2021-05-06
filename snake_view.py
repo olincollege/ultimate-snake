@@ -88,11 +88,40 @@ class View():
         self._end_menu_surface.blit(self._end_menu, self._end_menu_rect)
 
 
-    def draw(self):
+    def draw(self, potion):
         """
         Display a representation of the snake game.
         """
         self._screen.fill('white')
+        
+        self.draw_apple()
+        self.draw_border()
+        self.draw_score()
+        self.draw_menus() 
+        self.draw_potion()
+        
+        if potion:
+            self.draw_invisible_snake()
+        elif not potion:
+            self.draw_snake()
+        pygame.display.update()
+        
+    def draw_apple(self):
+                # blit an image of an apple for the food
+        apple_image = pygame.image.load('images/apple.png').convert_alpha()
+        apple_rect = apple_image.get_rect()
+        apple_rect.x = self._board.food.item_location[0]
+        apple_rect.y = self._board.food.item_location[1]
+        self._screen.blit(apple_image, apple_rect)
+        
+    def draw_potion(self):
+        potion_image = pygame.image.load('images/potion.png').convert_alpha()
+        potion_rect = potion_image.get_rect()
+        potion_rect.x = self._board.potion.item_location[0]
+        potion_rect.y = self._board.potion.item_location[1]
+        self._screen.blit(potion_image, potion_rect)   
+    
+    def draw_snake(self):
        # get head image and blit
         self.get_head_image()
         head_rect = self._head_image.get_rect()
@@ -106,14 +135,12 @@ class View():
             segment_rect.x = segment[0]
             segment_rect.y = segment[1]
             self._screen.blit(self.surface, segment_rect)
-
-        # blit an image of an apple for the food
-        apple_image = pygame.image.load('images/apple.png').convert_alpha()
-        apple_rect = apple_image.get_rect()
-        apple_rect.x = self._board.food.item_location[0]
-        apple_rect.y = self._board.food.item_location[1]
-        self._screen.blit(apple_image, apple_rect)
-
+            
+    def draw_invisible_snake(self):
+        pass      
+            
+    def draw_border(self):
+        
         # create frame around the game window
         # top line
         pygame.draw.rect(self._screen, (169, 169, 169), [
@@ -128,14 +155,17 @@ class View():
         pygame.draw.rect(self._screen, (169, 169, 169), [
                          self._board.length, 0, self._board.border_width, self._board.length+ \
                             self._board.border_width])
-
-        # display score
+        
+    def draw_score(self):
+               # display score
         score = str(self._board.score)
         font = pygame.font.SysFont(None, 60)
         score_text = font.render(f'Score: {score}', True, 'black')
         self._screen.blit(score_text, (30, 10))
         pygame.display.update()
-
+        
+    def draw_menus(self):
+        
         while self._board._start_game is False:
             self.draw_start_menu()
             pygame.display.update()
@@ -160,9 +190,4 @@ class View():
                         self._board._new_game = True
             break
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
-        pygame.display.update()
