@@ -50,7 +50,6 @@ class View():
         self._screen = pygame.display.set_mode((self._board.length + \
             self._board.border_width,self._board.height+self._board.border_width))
         self._head_image = pygame.image.load('images/snake_left.png')
-
         self._start_menu_surface = pygame.display.set_mode((self._board.length + \
             self._board.border_width,self._board.height+self._board.border_width))
         self._end_menu_surface = pygame.display.set_mode((self._board.length + \
@@ -72,17 +71,19 @@ class View():
         head_right = pygame.image.load('images/snake_right.png')
         head_left = pygame.image.load('images/snake_left.png')
 
+        #figures out what image of the head to use based on
+        #the relative position of the body and head
         head_orientation_x = self._board.snake.coordinates[1][0] - \
             self._board.snake.coordinates[0][0]
         head_orientation_y = self._board.snake.coordinates[1][1] - \
             self._board.snake.coordinates[0][1]
-        if head_orientation_x == 30 and head_orientation_y == 0:
+        if head_orientation_x == self._board.snake.grid_size and head_orientation_y == 0:
             self._head_image = head_left
-        elif head_orientation_x == -30 and head_orientation_y == 0:
+        elif head_orientation_x == -self._board.snake.grid_size and head_orientation_y == 0:
             self._head_image = head_right
-        elif head_orientation_x == 0 and head_orientation_y == 30:
+        elif head_orientation_x == 0 and head_orientation_y == self._board.snake.grid_size:
             self._head_image = head_up
-        elif head_orientation_x == 0 and head_orientation_y == -30:
+        elif head_orientation_x == 0 and head_orientation_y == -self._board.snake.grid_size:
             self._head_image = head_down
 
 
@@ -118,7 +119,7 @@ class View():
         """
         Displays the apple item.
         """
-                # blit an image of an apple for the food
+        # blit an image of an apple for the food
         apple_image = pygame.image.load('images/apple.png').convert_alpha()
         apple_rect = apple_image.get_rect()
         apple_rect.x = self._board.food.item_location[0]
@@ -129,6 +130,7 @@ class View():
         """
         Displays the potion item.
         """
+        # blit an image of the potion for the invisibility potion
         potion_image = pygame.image.load('images/potion.png').convert_alpha()
         potion_rect = potion_image.get_rect()
         potion_rect.x = self._board.potion.item_location[0]
@@ -140,6 +142,7 @@ class View():
         """
         Draws the speed boost item.
         """
+        # blit an image of the speed boost for the speed boost item
         lightning_image = pygame.image.load('images/lightning.png').convert_alpha()
         lightning_rect = lightning_image.get_rect()
         lightning_rect.x = self._board.speed_boost.item_location[0]
@@ -196,7 +199,7 @@ class View():
         """
         Displays the score.
         """
-               # display score
+        # display score
         score = str(self._board.score)
         font = pygame.font.SysFont(None, 60)
         score_text = font.render(f'Score: {score}', True, 'black')

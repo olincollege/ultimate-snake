@@ -33,6 +33,8 @@ class Board:
     length = 600
     height = 600
     border_width = 30
+    start_game = False
+    new_game = False
 
     def __init__(self, snake, food, potion, speed_boost):
         """
@@ -50,21 +52,17 @@ class Board:
             with.
         _speed_boost: An Item instance representing the speed boost item to
             interact with.
-        _start_game: A boolian representing if the game should start or
-            not.
         _game_over: A boolian representinf if the game should end or
             not.
-        _new_game: A boolian representing if the game should restart or
-            not.
+
         """
         self._snake = snake
         self._food = food
         self._score = 0
         self._potion = potion
         self._speed_boost = speed_boost
-        self.start_game = False
         self.game_over = False
-        self.new_game = False
+
 
     @property
     def snake(self):
@@ -136,6 +134,8 @@ class Board:
         Checks if any item spawns on top of the snake. If it has
         then a new item will spawn.
         """
+
+        #check each chunk of the snake
         for segment in self._snake.coordinates[1:]:
             if segment == self._food.item_location:
                 self._food.spawn_new_item()
@@ -156,7 +156,7 @@ class Board:
         Checks if the snake has collided with itself. True means that it has.
 
         Returns:
-            A boolian representing if the snake has collided with itself.
+            A boolian representing if the snake had has collided with its body.
         """
         return self._snake.coordinates[0] in self._snake.coordinates[1:]
 
@@ -165,7 +165,7 @@ class Board:
         Checks if the snake has collided with the walls. True means that it has.
 
         Returns:
-            A boolian representing if the snake has collided with the wall.
+            A boolian representing if the snake head has collided with the wall.
         """
         return (self._snake.coordinates[0][0] > self.length-self.border_width or
             self._snake.coordinates[0][0] < self.border_width or
@@ -213,6 +213,8 @@ class Snake:
             the coordinates of the segment.
     """
 
+    #grid size effects the size of the snake chunks and how
+    #many blocks the snake moves each time
     grid_size = 30
 
     def __init__(self):
@@ -227,6 +229,7 @@ class Snake:
                 the coordinates of the segment.
         """
         self._direction = 0
+        #initial coordinates of each chunk of the snake
         self._coordinates = [[10 * self.grid_size, 10 * self.grid_size], [
             11 * self.grid_size, 10 * self.grid_size], [12 * self.grid_size, 10 * self.grid_size]]
 
@@ -249,8 +252,11 @@ class Snake:
         """
         Moves each snake segment according to the direction.
         """
+        #make a copy of the old snake without the last block
+        #this will help simulate the snake moving
         new_coordinates = self._coordinates[:-1]
 
+        #update the x and y of the head to new positions
         head_x = new_coordinates[0][0] + direction[0]
         head_y = new_coordinates[0][1] + direction[1]
 
