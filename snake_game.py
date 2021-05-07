@@ -39,7 +39,9 @@ def main():
             game.food.spawn_new_item()   
             
         if game.potion_eaten():
-             loop_counter1 = 10
+            loop_counter1 = 10
+            game.add_score()
+            game.snake.add_snake_segment(game.snake.directions())
         if loop_counter1>0:
             potion = True
         else:
@@ -48,7 +50,9 @@ def main():
         View(game).draw(potion)
         
         if game.speed_eaten():
-             loop_counter2 = 10
+            game.add_score()
+            game.snake.add_snake_segment(game.snake.directions())
+            loop_counter2 = 10
         if loop_counter2>0:
             fps = 20
         else:
