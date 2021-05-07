@@ -44,7 +44,7 @@ class Controller():
             self._board.snake.move([0, 1 * self._board.snake.grid_size])
         else:
             try:
-                direction = self._board.snake.directions()
+                direction = self._board.snake.direction
                 self._board.snake.move(direction)
             except TypeError:
                 pass

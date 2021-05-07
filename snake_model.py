@@ -17,38 +17,54 @@ class Board:
             in the border that frames the game window.
         _snake: A Snake instance representing the snake to interact
             with.
-        _food: A Food instance representing the food to interact
+        _food: An Item instance representing the food to interact
             with.
         _score: An int representing the player's score based on food
             the snake has eaten.
-        _potion:
+        _potion: An Item instance representing the potion to interact
+            with.
+        _speed_boost: An Item instance representing the speed boost item to
+            interact with.
+        _game_over: A boolian representinf if the game should end or
+            not.
+        _new_game: A boolian representing if the game should restart or
+            not.
     """
     length = 600
     height = 600
     border_width = 30
 
-    def __init__(self, snake, food, potion, speed):
+    def __init__(self, snake, food, potion, speed_boost):
         """
         Create a board in which the snake, food, and environment
         interact.
 
         Args:
-            _snake: A Snake instance representing the snake to interact
-                with.
-            _food: A Food instance representing the food to interact
-                with.
-            _score: An int representing the player's score based on food
-                the snake has eaten.
-            _potion:
+        _snake: A Snake instance representing the snake to interact
+            with.
+        _food: An Item instance representing the food to interact
+            with.
+        _score: An int representing the player's score based on food
+            the snake has eaten.
+        _potion: An Item instance representing the potion to interact
+            with.
+        _speed_boost: An Item instance representing the speed boost item to
+            interact with.
+        _start_game: A boolian representing if the game should start or
+            not.
+        _game_over: A boolian representinf if the game should end or
+            not.
+        _new_game: A boolian representing if the game should restart or
+            not.
         """
         self._snake = snake
         self._food = food
         self._score = 0
         self._potion = potion
-        self._speed = speed
-        self._start_game = False
-        self._game_over = False
-        self._new_game = False
+        self._speed_boost = speed_boost
+        self.start_game = False
+        self.game_over = False
+        self.new_game = False
 
     @property
     def snake(self):
@@ -63,21 +79,21 @@ class Board:
         Return the food.
         """
         return self._food
-    
+
     @property
     def potion(self):
         """
         Return the potion.
         """
         return self._potion
-    
+
     @property
-    def speed(self):
+    def speed_boost(self):
         """
-        Return the potion.
+        Return the speed_boost.
         """
-        return self._speed
-    
+        return self._speed_boost
+
     @property
     def score(self):
         """
@@ -98,7 +114,7 @@ class Board:
         """
         return self._snake.coordinates[0] == self._food.item_location
 
-    def game_over(self):
+    def check_game_over(self):
         """
         Returns a boolian based on if the game should end.
 
@@ -111,23 +127,22 @@ class Board:
             A boolian representing if the game should end.
         """
         if self.snake_collision() or self.wall_collision():
-            self._game_over = True 
+            self.game_over = True
 
     def item_snake_overlap(self):
         """
-        Checks if the food spawns on the snake.
+        Checks if any item spawns on the snake.
 
-        Checks if the food spawns on top of the snake. If it has
-        then new food will spawn.
+        Checks if any item spawns on top of the snake. If it has
+        then a new item will spawn.
         """
-        # checks if food spawns on the snake
         for segment in self._snake.coordinates[1:]:
             if segment == self._food.item_location:
                 self._food.spawn_new_item()
             elif segment == self._potion.item_location:
                 self._potion.spawn_new_item()
-            elif segment == self._speed.item_location:
-                self._speed.spawn_new_item()
+            elif segment == self._speed_boost.item_location:
+                self._speed_boost.spawn_new_item()
 
     def add_score(self):
         """
@@ -156,33 +171,33 @@ class Board:
             self._snake.coordinates[0][0] < self.border_width or
             self._snake.coordinates[0][1] > self.height-self.border_width or
             self._snake.coordinates[0][1] < self.border_width*2)
-    
+
     def potion_eaten(self):
         """
-        Returns a boolian based on if the snake has eaten food.
+        Returns a boolian based on if the snake has eaten a potion.
 
         Returns a boolian based on if the head of the snake has
-        overlapped with any food. True means that the snake has
-        eaten food, false means that the snake has not eaten.
+        overlapped with any potion. True means that the snake has
+        eaten a potion, false means that the snake has not eaten.
 
         Returns:
-            A boolian representing if the snake has eaten food.
+            A boolian representing if the snake has eaten a potion.
         """
-        return self._snake.coordinates[0] == self._potion.item_location    
-    
+        return self._snake.coordinates[0] == self._potion.item_location
+
     def speed_eaten(self):
         """
-        Returns a boolian based on if the snake has eaten food.
+        Returns a boolian based on if the snake has eaten a speed boost.
 
         Returns a boolian based on if the head of the snake has
-        overlapped with any food. True means that the snake has
-        eaten food, false means that the snake has not eaten.
+        overlapped with a speed boost. True means that the snake has
+        eaten a speed boost, false means that the snake has not eaten.
 
         Returns:
-            A boolian representing if the snake has eaten food.
+            A boolian representing if the snake has eaten a speed boost.
         """
-        return self._snake.coordinates[0] == self._speed.item_location     
-    
+        return self._snake.coordinates[0] == self._speed_boost.item_location
+
 
 class Snake:
     """
@@ -193,11 +208,11 @@ class Snake:
             body segment.
         _direction: An int representing the direction the snake should
             move.
-        _speed: An int representing how fast the snake is moving.
         _coordinates: A list of lists. Each inside list represents one
             segment of the snake body and containts two ints representing
             the coordinates of the segment.
     """
+
     grid_size = 30
 
     def __init__(self):
@@ -207,13 +222,11 @@ class Snake:
         Args:
             _direction: An int representing the direction the snake should
                 move.
-            _speed: An int representing how fast the snake is moving.
             _coordinates: A list of lists. Each inside list represents one
                 segment of the snake body and containts two ints representing
                 the coordinates of the segment.
         """
         self._direction = 0
-        self._speed = 3
         self._coordinates = [[10 * self.grid_size, 10 * self.grid_size], [
             11 * self.grid_size, 10 * self.grid_size], [12 * self.grid_size, 10 * self.grid_size]]
 
@@ -223,6 +236,14 @@ class Snake:
         Return the coordinates of the snake.
         """
         return self._coordinates
+
+    @property
+    def direction(self):
+        """
+        Return the direction the snake is going.
+        """
+        return self._direction
+
 
     def move(self, direction):
         """
@@ -253,16 +274,10 @@ class Snake:
 
         self._direction = direction
 
-    def directions(self):
-        """
-        Return the direction the snake is going.
-        """
-        return self._direction
-
 
 class Item:
     """
-    A representation of the food in the snake game.
+    A representation of the items in the snake game.
 
     Attributes:
         _item_location_x: The x coordinate of the item location.
