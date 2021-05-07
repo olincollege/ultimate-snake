@@ -34,6 +34,7 @@ def main():
         game.game_over()
         game.item_snake_overlap()
         if game.food_eaten():
+            View(game).play_eaten_sound()
             game.add_score()
             game.snake.add_snake_segment(game.snake.directions())
             game.food.spawn_new_item()   

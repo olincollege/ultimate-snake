@@ -41,6 +41,8 @@ class View():
     head_right = pygame.image.load('images/snake_right.png')
     head_left = pygame.image.load('images/snake_left.png')
 
+    food_eaten_sound = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
+
     def __init__(self, board):
         """
         Create a new view of a snake game.
@@ -63,6 +65,9 @@ class View():
             self._board.border_width,self._board.height+self._board.border_width))
         self._end_menu_surface = pygame.display.set_mode((self._board.length + \
             self._board.border_width,self._board.height+self._board.border_width))
+
+    def play_eaten_sound(self):
+        pygame.mixer.Sound.play(self.food_eaten_sound)
 
     def get_head_image(self):
         """
