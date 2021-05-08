@@ -27,16 +27,16 @@ To install the game, please visit our repository at https://github.com/olincolle
 
 ## How to Play
 
-<img src="images/game_terminal.png" width="600"/>
+<img src="images/game_terminal.png" width="500"/>
 To play the game first go into the ultimate-snake-game repository and run `python snake_game.py`.
 
-<img src="images/game_start.png" width="600"/> 
+<img src="images/game_start.png" width="500"/> 
 Next, to begin the game, press the yellow "Play Now!" button.
 
-<img src="images/game_playing.png" width="600"/> 
-To begin, playing simply press any of the arrow keys (but remember that if the snake hits itself it dies!)
+<img src="images/game_playing.png" width="500"/> 
+To begin playing, simply press any of the arrow keys (but remember that if the snake hits itself it dies).
 
-<img src="images/game_end.png" width="600"/> 
+<img src="images/game_end.png" width="500"/> 
 If your snake dies, you will be brought to the end screen as seen above. If you press the yellow "Restart" button, you will be brought back to the starting screen.
 
 ## Creators
