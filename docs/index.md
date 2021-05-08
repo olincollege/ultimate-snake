@@ -46,6 +46,11 @@ If your snake dies, you will be brought to the end screen as seen above. If you 
 Olin College of Engineering 2024\
 Electrical and Computer Engineering
 
+<img src="images/aaron_pic.jpg" width="150"/>\
+<a href="https://www.linkedin.com/in/antoinette-tan/">Aaron Huang</a>\
+Olin College of Engineering 2024\
+Mechanical Engineering
+
 ## Resources
 
-To create the item images and the head of the snake we used https://www.pixilart.com/.
+To create the item images and the head of the snake we used [PixelArt](https://www.pixilart.com/). All other images were created using adobe [Photoshop](https://www.adobe.com/products/photoshop.html) and [Illustrator](https://www.adobe.com/products/illustrator.html). Sounds were produced by us and edited with [Audacity](https://www.audacityteam.org/).
