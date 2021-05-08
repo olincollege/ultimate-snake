@@ -15,6 +15,7 @@ The goal of the game is to get the highest score possible.
 ## Unique Features
 
 Unlike a typical snake game, our game has special items! Below are all the possible items that the snake can eat.
+
 <img src="images/big_apple.png" width="120"/>  <img src="images/big_lightning.png" width="120"/>  <img src="images/big_potion.png" width="120"/> 
 
 All items increase the score and length of the snake by one when eaten. The apple has no other effect, the lightning gives a temporary speed boost, and the potion makes the snake invisible for a couple seconds.
