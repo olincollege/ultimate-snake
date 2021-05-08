@@ -21,7 +21,7 @@ def main():
     game = Board(snake, food, potion, speed_boost)
     clock = pygame.time.Clock()
 
-    potion = False
+    ate_potion = False
 
     #initialize loop counters which will help us
     #make the effects of special items last only a certain
@@ -49,9 +49,9 @@ def main():
             loop_counter1 = 10
             game.add_score()
             game.snake.add_snake_segment(game.snake.direction)
-        potion = bool(loop_counter1 > 0)
+        ate_potion = bool(loop_counter1 > 0)
 
-        View(game).draw(potion)
+        View(game).draw(ate_potion)
 
         if game.speed_eaten():
             game.add_score()

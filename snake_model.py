@@ -112,6 +112,32 @@ class Board:
         """
         return self._snake.coordinates[0] == self._food.item_location
 
+    def potion_eaten(self):
+        """
+        Returns a boolian based on if the snake has eaten a potion.
+
+        Returns a boolian based on if the head of the snake has
+        overlapped with any potion. True means that the snake has
+        eaten a potion, false means that the snake has not eaten.
+
+        Returns:
+            A boolian representing if the snake has eaten a potion.
+        """
+        return self._snake.coordinates[0] == self._potion.item_location
+
+    def speed_eaten(self):
+        """
+        Returns a boolian based on if the snake has eaten a speed boost.
+
+        Returns a boolian based on if the head of the snake has
+        overlapped with a speed boost. True means that the snake has
+        eaten a speed boost, false means that the snake has not eaten.
+
+        Returns:
+            A boolian representing if the snake has eaten a speed boost.
+        """
+        return self._snake.coordinates[0] == self._speed_boost.item_location
+
     def check_game_over(self):
         """
         Returns a boolian based on if the game should end.
@@ -171,33 +197,6 @@ class Board:
             self._snake.coordinates[0][0] < self.border_width or
             self._snake.coordinates[0][1] > self.height-self.border_width or
             self._snake.coordinates[0][1] < self.border_width*2)
-
-    def potion_eaten(self):
-        """
-        Returns a boolian based on if the snake has eaten a potion.
-
-        Returns a boolian based on if the head of the snake has
-        overlapped with any potion. True means that the snake has
-        eaten a potion, false means that the snake has not eaten.
-
-        Returns:
-            A boolian representing if the snake has eaten a potion.
-        """
-        return self._snake.coordinates[0] == self._potion.item_location
-
-    def speed_eaten(self):
-        """
-        Returns a boolian based on if the snake has eaten a speed boost.
-
-        Returns a boolian based on if the head of the snake has
-        overlapped with a speed boost. True means that the snake has
-        eaten a speed boost, false means that the snake has not eaten.
-
-        Returns:
-            A boolian representing if the snake has eaten a speed boost.
-        """
-        return self._snake.coordinates[0] == self._speed_boost.item_location
-
 
 class Snake:
     """

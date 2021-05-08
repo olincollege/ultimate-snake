@@ -87,7 +87,7 @@ class View():
             self._head_image = head_down
 
 
-    def draw(self, potion):
+    def draw(self, ate_potion):
         """
         Display a representation of the snake game.
         """
@@ -106,9 +106,9 @@ class View():
         self.draw_potion()
         self.draw_speed()
 
-        if potion:
+        if ate_potion:
             self.draw_invisible_snake()
-        elif not potion:
+        elif not ate_potion:
             self.draw_snake()
         self.draw_menus()
         self.draw_score()
