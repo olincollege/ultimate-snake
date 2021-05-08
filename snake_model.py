@@ -138,6 +138,26 @@ class Board:
         """
         return self._snake.coordinates[0] == self._speed_boost.item_location
 
+    def snake_collision(self):
+        """
+        Checks if the snake has collided with itself. True means that it has.
+
+        Returns:
+            A boolian representing if the snake had has collided with its body.
+        """
+        return self._snake.coordinates[0] in self._snake.coordinates[1:]
+
+    def wall_collision(self):
+        """
+        Checks if the snake has collided with the walls. True means that it has.
+
+        Returns:
+            A boolian representing if the snake head has collided with the wall.
+        """
+        return (self._snake.coordinates[0][0] > self.length-self.border_width or
+            self._snake.coordinates[0][0] < self.border_width or
+            self._snake.coordinates[0][1] > self.height-self.border_width or
+            self._snake.coordinates[0][1] < self.border_width*2)
     def check_game_over(self):
         """
         Returns a boolian based on if the game should end.
@@ -176,27 +196,6 @@ class Board:
         """
 
         self._score += 1
-
-    def snake_collision(self):
-        """
-        Checks if the snake has collided with itself. True means that it has.
-
-        Returns:
-            A boolian representing if the snake had has collided with its body.
-        """
-        return self._snake.coordinates[0] in self._snake.coordinates[1:]
-
-    def wall_collision(self):
-        """
-        Checks if the snake has collided with the walls. True means that it has.
-
-        Returns:
-            A boolian representing if the snake head has collided with the wall.
-        """
-        return (self._snake.coordinates[0][0] > self.length-self.border_width or
-            self._snake.coordinates[0][0] < self.border_width or
-            self._snake.coordinates[0][1] > self.height-self.border_width or
-            self._snake.coordinates[0][1] < self.border_width*2)
 
 class Snake:
     """
