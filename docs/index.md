@@ -47,7 +47,7 @@ Olin College of Engineering 2024\
 Electrical and Computer Engineering
 
 <img src="images/aaron_pic.jpg" width="150"/>\
-<a href="https://www.linkedin.com/in/antoinette-tan/">Aaron Huang</a>\
+<a href="https://www.linkedin.com/in/aaron-huang1/">Aaron Huang</a>\
 Olin College of Engineering 2024\
 Mechanical Engineering
 
