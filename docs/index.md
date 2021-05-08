@@ -46,7 +46,7 @@ If your snake dies, you will be brought to the end screen as seen above. If you 
 Olin College of Engineering 2024\
 Electrical and Computer Engineering
 
-<img src="images/aaron_pic.jpg" width="150"/>\
+<img src="images/aaron_pic.png" width="150"/>\
 <a href="https://www.linkedin.com/in/aaron-huang1/">Aaron Huang</a>\
 Olin College of Engineering 2024\
 Mechanical Engineering
