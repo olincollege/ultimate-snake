@@ -11,6 +11,13 @@ def play_eaten_sound():
     food_eaten_sound = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
     pygame.mixer.Sound.play(food_eaten_sound)
 
+def play_click_sound():
+    """
+    Plays a click sound
+    """
+    click_sound = pygame.mixer.Sound('sounds/click_sound.wav')
+    pygame.mixer.Sound.play(click_sound)
+
 class View():
     """
     Pygame based view of a snake game.
@@ -222,6 +229,7 @@ class View():
         """
         Draws each menu as needed.
         """
+        # Draws starts screen.
         while self._board.start_game is False:
             self.draw_start_menu()
             pygame.display.update()
@@ -229,21 +237,25 @@ class View():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                # Will exit start screen if mouse cursor clicks on start button.
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mouse_position = pygame.mouse.get_pos()
                     if self._start_menu_rect.collidepoint(mouse_position):
+                        play_click_sound()
                         self._board.start_game = True
+        # Draws game over screen.
         while self._board.game_over is True:
             self._screen.fill('white')
             self.draw_game_over()
-
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                # Will trigger new game if mouse cursor clicks on restart button.
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mouse_position = pygame.mouse.get_pos()
                     if self._end_menu_rect.collidepoint(mouse_position):
+                        play_click_sound()
                         self._board.new_game = True
             break
