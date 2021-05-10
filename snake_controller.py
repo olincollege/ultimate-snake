@@ -31,3 +31,9 @@ def player_input(board):
             board.snake.move(direction)
         except TypeError:
             pass
+
+def get_mouse_position():
+    """
+    Determines current mouse cursor position.
+    """
+    return pygame.mouse.get_pos()
