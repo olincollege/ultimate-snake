@@ -1,3 +1,4 @@
 [MASTER]
 
 extension-pkg-whitelist=pygame
+disable=W0212
