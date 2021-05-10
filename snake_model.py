@@ -11,9 +11,9 @@ class Board:
     interactions between the snake, food, and the environment.
 
     Attributes:
-        length: An int representing the length of the game window.
-        height: An int representing the height of the game window.
-        border_width: An int representing the number of pixels
+        LENGTH: An int representing the LENGTH of the game window.
+        HEIGHT: An int representing the HEIGHT of the game window.
+        BORDER_WIDTH: An int representing the number of pixels
             in the border that frames the game window.
         _snake: A Snake instance representing the snake to interact
             with.
@@ -30,9 +30,9 @@ class Board:
         _new_game: A boolian representing if the game should restart or
             not.
     """
-    length = 600
-    height = 600
-    border_width = 30
+    LENGTH = 600
+    HEIGHT = 600
+    BORDER_WIDTH = 30
     start_game = False
     new_game = False
 
@@ -154,10 +154,10 @@ class Board:
         Returns:
             A boolian representing if the snake head has collided with the wall.
         """
-        return (self._snake.coordinates[0][0] > self.length-self.border_width or
-            self._snake.coordinates[0][0] < self.border_width or
-            self._snake.coordinates[0][1] > self.height-self.border_width or
-            self._snake.coordinates[0][1] < self.border_width*2)
+        return (self._snake.coordinates[0][0] > self.LENGTH-self.BORDER_WIDTH or
+            self._snake.coordinates[0][0] < self.BORDER_WIDTH or
+            self._snake.coordinates[0][1] > self.HEIGHT-self.BORDER_WIDTH or
+            self._snake.coordinates[0][1] < self.BORDER_WIDTH*2)
     def check_game_over(self):
         """
         Returns a boolian based on if the game should end.
