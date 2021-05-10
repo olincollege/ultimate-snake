@@ -8,23 +8,23 @@ def play_eaten_sound():
     """
     Plays a crunch sound.
     """
-    food_eaten_sound = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
-    pygame.mixer.Sound.play(food_eaten_sound)
+    FOOD_EATEN_SOUND = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
+    pygame.mixer.Sound.play(FOOD_EATEN_SOUND)
 
 def play_click_sound():
     """
     Plays a click sound
     """
-    click_sound = pygame.mixer.Sound('sounds/click_sound.wav')
-    pygame.mixer.Sound.play(click_sound)
+    CLICK_SOUND = pygame.mixer.Sound('sounds/click_sound.wav')
+    pygame.mixer.Sound.play(CLICK_SOUND)
 
 class View():
     """
     Pygame based view of a snake game.
 
     Attributes:
-        _start_menu: A png image of the start menu.
-        _end_menu: A png image of the end menu.
+        _START_MENU: A png image of the start menu.
+        _END_MENU: A png image of the end menu.
         _board: A Board instance representing the snake game to
             display.
         _screen: A display surface representing the window to display
@@ -35,8 +35,8 @@ class View():
         _start_menu_rect: A rect representing the start menu.
         _end_menu_rect: A rect representing the end menu.
     """
-    _start_menu = pygame.image.load('images/start_menu.png')
-    _end_menu = pygame.image.load('images/end_menu.png')
+    _START_MENU = pygame.image.load('images/start_menu.png')
+    _END_MENU = pygame.image.load('images/end_menu.png')
     def __init__(self, board):
         """
         Create a new view of a snake game.
@@ -54,15 +54,15 @@ class View():
         """
 
         self._board = board
-        self._screen = pygame.display.set_mode((self._board.length + \
-            self._board.border_width,self._board.height+self._board.border_width))
+        self._screen = pygame.display.set_mode((self._board.LENGTH + \
+            self._board.BORDER_WIDTH,self._board.HEIGHT+self._board.BORDER_WIDTH))
         self._head_image = pygame.image.load('images/snake_left.png')
-        self._start_menu_surface = pygame.display.set_mode((self._board.length + \
-            self._board.border_width,self._board.height+self._board.border_width))
-        self._end_menu_surface = pygame.display.set_mode((self._board.length + \
-            self._board.border_width,self._board.height+self._board.border_width))
-        self._start_menu_rect = self._start_menu.get_rect(center = (300,300))
-        self._end_menu_rect = self._end_menu.get_rect(center = (300,300))
+        self._start_menu_surface = pygame.display.set_mode((self._board.LENGTH + \
+            self._board.BORDER_WIDTH,self._board.HEIGHT+self._board.BORDER_WIDTH))
+        self._end_menu_surface = pygame.display.set_mode((self._board.LENGTH + \
+            self._board.BORDER_WIDTH,self._board.HEIGHT+self._board.BORDER_WIDTH))
+        self._start_menu_rect = self._START_MENU.get_rect(center = (300,300))
+        self._end_menu_rect = self._END_MENU.get_rect(center = (300,300))
 
 
     def get_head_image(self):
@@ -190,17 +190,17 @@ class View():
         # create frame around the game window
         # top line
         pygame.draw.rect(self._screen, (169, 169, 169), [
-                         0, 0, self._board.length, self._board.border_width*2])
+                         0, 0, self._board.LENGTH, self._board.BORDER_WIDTH*2])
         # bottom line
         pygame.draw.rect(self._screen, (169, 169, 169), [
-                         0, self._board.height, self._board.length, self._board.border_width])
+                         0, self._board.HEIGHT, self._board.LENGTH, self._board.BORDER_WIDTH])
         # left line
         pygame.draw.rect(self._screen, (169, 169, 169), [
-                         0, 0, self._board.border_width, self._board.height])
+                         0, 0, self._board.BORDER_WIDTH, self._board.HEIGHT])
         # right line
         pygame.draw.rect(self._screen, (169, 169, 169), [
-                         self._board.length, 0, self._board.border_width, self._board.length+ \
-                            self._board.border_width])
+                         self._board.LENGTH, 0, self._board.BORDER_WIDTH, self._board.LENGTH+ \
+                            self._board.BORDER_WIDTH])
 
     def draw_score(self):
         """
@@ -217,13 +217,13 @@ class View():
         """
         Displays the start menu.
         """
-        self._start_menu_surface.blit(self._start_menu, self._start_menu_rect)
+        self._start_menu_surface.blit(self._START_MENU, self._start_menu_rect)
 
     def draw_game_over(self):
         """
         Displays the game over menu.
         """
-        self._end_menu_surface.blit(self._end_menu, self._end_menu_rect)
+        self._end_menu_surface.blit(self._END_MENU, self._end_menu_rect)
 
     def draw_menus(self):
         """
