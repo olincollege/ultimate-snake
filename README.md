@@ -2,7 +2,7 @@
 
 ## Summary
 
-Our game “Ultimate Snake” is a classic snake game in which the player can move around a snake while trying to avoid hitting any walls or itself. The goal of this game is to get the highest score possible by eating apples. The caveat is that whenever the snake eats an apple, its length increases. There are special items in our game! Beware of the invisibility potion and speed potion. Enjoy our fantastic homebrew sounds as you play!
+Our game “Ultimate Snake” is a classic snake game in which the player can move around a snake while trying to avoid hitting any walls or itself. The goal of this game is to get the highest score possible by eating items. The caveat is that whenever the snake eats an item, its length increases. There are also special items in our game! Beware of the invisibility potion and speed potion. Enjoy our fantastic homebrew sounds as you play!
 
 ## Installation
 
