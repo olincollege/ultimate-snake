@@ -18,13 +18,13 @@ def player_input(board):
     # get the state of all keyboard buttons.
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        board.snake.move([-1 * board.snake.grid_size, 0])
+        board.snake.move([-1 * board.snake.GRID_SIZE, 0])
     elif keys[pygame.K_RIGHT]:
-        board.snake.move([1 * board.snake.grid_size, 0])
+        board.snake.move([1 * board.snake.GRID_SIZE, 0])
     elif keys[pygame.K_UP]:
-        board.snake.move([0, -1 * board.snake.grid_size])
+        board.snake.move([0, -1 * board.snake.GRID_SIZE])
     elif keys[pygame.K_DOWN]:
-        board.snake.move([0, 1 * board.snake.grid_size])
+        board.snake.move([0, 1 * board.snake.GRID_SIZE])
     else:
         try:
             direction = board.snake.direction

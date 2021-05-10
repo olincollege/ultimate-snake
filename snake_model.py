@@ -11,24 +11,26 @@ class Board:
     interactions between the snake, food, and the environment.
 
     Attributes:
-        LENGTH: An int representing the LENGTH of the game window.
-        HEIGHT: An int representing the HEIGHT of the game window.
+        LENGTH: An int representing the length of the game window.
+        HEIGHT: An int representing the height of the game window.
         BORDER_WIDTH: An int representing the number of pixels
             in the border that frames the game window.
+        _start_game: A boolian representing if the game should start or not.
+        _new_game: A boolian representing if the game should restart or
+            not.
         _snake: A Snake instance representing the snake to interact
             with.
         _food: An Item instance representing the food to interact
             with.
-        _score: An int representing the player's score based on food
-            the snake has eaten.
+        _score: An int representing the player's score based on the amount
+            of items the snake has eaten.
         _potion: An Item instance representing the potion to interact
             with.
-        _speed_boost: An Item instance representing the speed boost item to
+        _speed_boost: An Item instance representing the speed boost to
             interact with.
-        _game_over: A boolian representinf if the game should end or
+        _game_over: A boolian representing if the game should end or
             not.
-        _new_game: A boolian representing if the game should restart or
-            not.
+
     """
     LENGTH = 600
     HEIGHT = 600
@@ -46,8 +48,8 @@ class Board:
             with.
         _food: An Item instance representing the food to interact
             with.
-        _score: An int representing the player's score based on food
-            the snake has eaten.
+        _score: An int representing the player's score based on how many
+            items the snake has eaten.
         _potion: An Item instance representing the potion to interact
             with.
         _speed_boost: An Item instance representing the speed boost item to
@@ -62,7 +64,6 @@ class Board:
         self._potion = potion
         self._speed_boost = speed_boost
         self.game_over = False
-
 
     @property
     def snake(self):
@@ -155,9 +156,10 @@ class Board:
             A boolian representing if the snake head has collided with the wall.
         """
         return (self._snake.coordinates[0][0] > self.LENGTH-self.BORDER_WIDTH or
-            self._snake.coordinates[0][0] < self.BORDER_WIDTH or
-            self._snake.coordinates[0][1] > self.HEIGHT-self.BORDER_WIDTH or
-            self._snake.coordinates[0][1] < self.BORDER_WIDTH*2)
+                self._snake.coordinates[0][0] < self.BORDER_WIDTH or
+                self._snake.coordinates[0][1] > self.HEIGHT-self.BORDER_WIDTH or
+                self._snake.coordinates[0][1] < self.BORDER_WIDTH*2)
+
     def check_game_over(self):
         """
         Returns a boolian based on if the game should end.
@@ -181,7 +183,7 @@ class Board:
         then a new item will spawn.
         """
 
-        #check each chunk of the snake
+        # check each chunk of the snake
         for segment in self._snake.coordinates[1:]:
             if segment == self._food.item_location:
                 self._food.spawn_new_item()
@@ -197,23 +199,24 @@ class Board:
 
         self._score += 1
 
+
 class Snake:
     """
     A representation of the snake in the snake game.
 
     Attributes:
-        grid_size: An int representing the number of pixels in each
+        GRID_SIZE: An int representing the number of pixels in each
             body segment.
         _direction: An int representing the direction the snake should
             move.
-        _coordinates: A list of lists. Each inside list represents one
+        _coordinates: A list of lists. Each inner list represents one
             segment of the snake body and containts two ints representing
             the coordinates of the segment.
     """
 
-    #grid size effects the size of the snake chunks and how
-    #many blocks the snake moves each time
-    grid_size = 30
+    # grid size effects the size of the snake chunks and how
+    # many blocks the snake moves each time
+    GRID_SIZE = 30
 
     def __init__(self):
         """
@@ -222,14 +225,14 @@ class Snake:
         Args:
             _direction: An int representing the direction the snake should
                 move.
-            _coordinates: A list of lists. Each inside list represents one
+            _coordinates: A list of lists. Each inner list represents one
                 segment of the snake body and containts two ints representing
                 the coordinates of the segment.
         """
         self._direction = 0
-        #initial coordinates of each chunk of the snake
-        self._coordinates = [[10 * self.grid_size, 10 * self.grid_size], [
-            11 * self.grid_size, 10 * self.grid_size], [12 * self.grid_size, 10 * self.grid_size]]
+        # initial coordinates of each chunk of the snake
+        self._coordinates = [[10 * self.GRID_SIZE, 10 * self.GRID_SIZE], [
+            11 * self.GRID_SIZE, 10 * self.GRID_SIZE], [12 * self.GRID_SIZE, 10 * self.GRID_SIZE]]
 
     @property
     def coordinates(self):
@@ -245,16 +248,15 @@ class Snake:
         """
         return self._direction
 
-
     def move(self, direction):
         """
         Moves each snake segment according to the direction.
         """
-        #make a copy of the old snake without the last block
-        #this will help simulate the snake moving
+        # make a copy of the old snake without the last block
+        # this will help simulate the snake moving
         new_coordinates = self._coordinates[:-1]
 
-        #update the x and y of the head to new positions
+        # update the x and y of the head to new positions
         head_x = new_coordinates[0][0] + direction[0]
         head_y = new_coordinates[0][1] + direction[1]
 

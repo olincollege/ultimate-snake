@@ -4,19 +4,22 @@ Snake game view.
 import sys
 import pygame
 
+
 def play_eaten_sound():
     """
     Plays a crunch sound.
     """
-    FOOD_EATEN_SOUND = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
-    pygame.mixer.Sound.play(FOOD_EATEN_SOUND)
+    food_eaten_sound = pygame.mixer.Sound('sounds/snake_eat_sound.wav')
+    pygame.mixer.Sound.play(food_eaten_sound)
+
 
 def play_click_sound():
     """
     Plays a click sound
     """
-    CLICK_SOUND = pygame.mixer.Sound('sounds/click_sound.wav')
-    pygame.mixer.Sound.play(CLICK_SOUND)
+    click_sound = pygame.mixer.Sound('sounds/click_sound.wav')
+    pygame.mixer.Sound.play(click_sound)
+
 
 class View():
     """
@@ -37,6 +40,7 @@ class View():
     """
     _START_MENU = pygame.image.load('images/start_menu.png')
     _END_MENU = pygame.image.load('images/end_menu.png')
+
     def __init__(self, board):
         """
         Create a new view of a snake game.
@@ -64,13 +68,12 @@ class View():
         self._start_menu_rect = self._START_MENU.get_rect(center = (300,300))
         self._end_menu_rect = self._END_MENU.get_rect(center = (300,300))
 
-
     def get_head_image(self):
         """
         Gets the correct image for the snake head.
 
         Gets the correct orientation of the snake head based on
-        the snake's head coordinates in relation to its body.
+        the snake's head position in relation to its body.
         """
 
         head_up = pygame.image.load('images/snake_up.png')
@@ -78,21 +81,20 @@ class View():
         head_right = pygame.image.load('images/snake_right.png')
         head_left = pygame.image.load('images/snake_left.png')
 
-        #figures out what image of the head to use based on
-        #the relative position of the body and head
+        # figures out what image of the head to use based on
+        # the relative position of the body and head
         head_orientation_x = self._board.snake.coordinates[1][0] - \
             self._board.snake.coordinates[0][0]
         head_orientation_y = self._board.snake.coordinates[1][1] - \
             self._board.snake.coordinates[0][1]
-        if head_orientation_x == self._board.snake.grid_size and head_orientation_y == 0:
+        if head_orientation_x == self._board.snake.GRID_SIZE and head_orientation_y == 0:
             self._head_image = head_left
-        elif head_orientation_x == -self._board.snake.grid_size and head_orientation_y == 0:
+        elif head_orientation_x == -self._board.snake.GRID_SIZE and head_orientation_y == 0:
             self._head_image = head_right
-        elif head_orientation_x == 0 and head_orientation_y == self._board.snake.grid_size:
+        elif head_orientation_x == 0 and head_orientation_y == self._board.snake.GRID_SIZE:
             self._head_image = head_up
-        elif head_orientation_x == 0 and head_orientation_y == -self._board.snake.grid_size:
+        elif head_orientation_x == 0 and head_orientation_y == -self._board.snake.GRID_SIZE:
             self._head_image = head_down
-
 
     def draw(self, ate_potion):
         """
@@ -144,13 +146,13 @@ class View():
         potion_rect.y = self._board.potion.item_location[1]
         self._screen.blit(potion_image, potion_rect)
 
-
     def draw_speed(self):
         """
         Draws the speed boost item.
         """
         # blit an image of the speed boost for the speed boost item
-        lightning_image = pygame.image.load('images/lightning.png').convert_alpha()
+        lightning_image = pygame.image.load(
+            'images/lightning.png').convert_alpha()
         lightning_rect = lightning_image.get_rect()
         lightning_rect.x = self._board.speed_boost.item_location[0]
         lightning_rect.y = self._board.speed_boost.item_location[1]
@@ -199,8 +201,8 @@ class View():
                          0, 0, self._board.BORDER_WIDTH, self._board.HEIGHT])
         # right line
         pygame.draw.rect(self._screen, (169, 169, 169), [
-                         self._board.LENGTH, 0, self._board.BORDER_WIDTH, self._board.LENGTH+ \
-                            self._board.BORDER_WIDTH])
+                         self._board.LENGTH, 0, self._board.BORDER_WIDTH, self._board.LENGTH +
+                         self._board.BORDER_WIDTH])
 
     def draw_score(self):
         """
